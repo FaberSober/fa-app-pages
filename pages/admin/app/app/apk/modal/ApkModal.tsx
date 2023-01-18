@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { get } from 'lodash';
 import { Button, Form, Input } from 'antd';
-import {EditOutlined, PlusOutlined} from "@ant-design/icons";
-import { DragModal, FaHref, ApiEffectLayoutContext, FaUtils, CommonModalProps, UploadFileLocal } from '@fa/ui';
+import { EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { ApiEffectLayoutContext, CommonModalProps, DragModal, FaHref, FaUtils, UploadFileLocal, UploadImgLocal } from '@fa/ui';
 import { apkApi as api } from '@/services';
 import { App } from '@/types';
 
@@ -85,6 +85,15 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
           onValuesChange={(cv) => {
             if (cv.apkFileId) {
               // 调用接口获取上传apk的文件信息
+              api.getApkInfo(cv.apkFileId).then(res => {
+                form.setFieldsValue({
+                  name: res.data.name,
+                  applicationId: res.data.applicationId,
+                  versionCode: res.data.versionCode,
+                  versionName: res.data.versionName,
+                  iconId: res.data.iconId,
+                })
+              })
             }
           }}
         >
@@ -98,13 +107,13 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
             <Input disabled />
           </Form.Item>
           <Form.Item name="versionCode" label="当前版本号" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
-            <Input />
+            <Input disabled />
           </Form.Item>
           <Form.Item name="versionName" label="当前版本名称" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
-            <Input />
+            <Input disabled />
           </Form.Item>
           <Form.Item name="iconId" label="图标文件" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
-            <Input />
+            <UploadImgLocal disabled />
           </Form.Item>
         </Form>
       </DragModal>
