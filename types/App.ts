@@ -13,8 +13,12 @@ namespace App {
     versionCode: string;
     /** 当前版本名称 */
     versionName: string;
+    /** apk文件ID */
+    fileId: string;
     /** 图标文件ID */
     iconId: string;
+    /** 短链 */
+    shortCode: string;
   }
 
   /** APP-APK版本表 */
@@ -23,6 +27,8 @@ namespace App {
     id: number;
     /** 应用ID */
     appId: number;
+    /** 应用名称 */
+    name: string;
     /** 应用包名 */
     applicationId: string;
     /** 版本号 */

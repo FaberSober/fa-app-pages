@@ -5,6 +5,7 @@ import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, useDel
 import { apkApi as api } from '@/services';
 import { App } from '@/types';
 import ApkModal from './modal/ApkModal';
+import ApkUploadModal from './modal/ApkUploadModal';
 
 const serviceName = 'APP-APK表';
 const biz = 'app_apk';
@@ -64,7 +65,7 @@ export default function Index() {
           <Space>
             <Button onClick={() => form.submit()} loading={loading} icon={<SearchOutlined />}>查询</Button>
             <Button onClick={() => clearForm(form)} loading={loading}>重置</Button>
-            <ApkModal addBtn title={`新增${serviceName}信息`} fetchFinish={fetchPageList} />
+            <ApkUploadModal addBtn title="上传APK" fetchFinish={fetchPageList} />
             <Button loading={exporting} icon={<DownloadOutlined />} onClick={fetchExportExcel}>导出</Button>
           </Space>
         </div>

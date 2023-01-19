@@ -9,6 +9,9 @@ class Api extends BaseApi<App.Apk, number> {
   /** 解析APK信息 */
   getApkInfo = (fileId: string): Promise<Fa.Ret<App.Apk>> => this.get(`getApkInfo/${fileId}`);
 
+  /** 新增apk */
+  create = (params: any): Promise<Fa.Ret<App.Apk>> => this.post('create', params);
+
 }
 
 export default new Api(GATE_APP.app.app, 'apk');
