@@ -5,4 +5,4 @@ import { App } from '@/types';
 /** ------------------------------------------ xx 操作接口 ------------------------------------------ */
 class Api extends BaseApi<App.ApkVersion, number> {}
 
-export default new Api(GATE_APP.app, 'apkVersion');
+export default new Api(GATE_APP.app.app, 'apkVersion');

@@ -24,8 +24,21 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
     })
   }
 
+  function getInitialValues() {
+    return {
+      fileId: undefined,
+      name: undefined,
+      shortCode: undefined,
+      applicationId: undefined,
+      versionCode: undefined,
+      versionName: undefined,
+      iconId: undefined,
+    }
+  }
+
   function showModal() {
     setOpen(true)
+    form.setFieldsValue(getInitialValues())
   }
 
   const loading = loadingEffect[api.getUrl('add')] || loadingEffect[api.getUrl('update')];
