@@ -1,8 +1,8 @@
 import React from 'react';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Form, Input, Popover, QRCode, Space } from 'antd';
 import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, useDelete, useExport, useTableQueryParams } from '@fa/ui';
-import { apkApi as api } from '@/services';
+import { apkApi as api, fileSaveApi } from '@/services';
 import { App } from '@/types';
 import ApkModal from './modal/ApkModal';
 import ApkUploadModal from './modal/ApkUploadModal';
@@ -27,11 +27,34 @@ export default function Index() {
     const { sorter } = queryParams;
     return [
       BaseTableUtils.genIdColumn('ID', 'id', 70, sorter),
-      BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('应用包名', 'applicationId', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('当前版本号', 'versionCode', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('当前版本名称', 'versionName', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('图标文件ID', 'iconId', 100, sorter),
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('图标', 'iconId', 100, sorter),
+        sorter: false,
+        render: (_, r) => <img style={{width: 30, height: 30}} src={fileSaveApi.genLocalGetFile(r.iconId)} />
+      },
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 150, sorter),
+        render: (_, r) => (
+          <Popover
+            title="下载"
+            content={(
+              <div className="fa-flex-column-center">
+                <QRCode
+                  errorLevel="H"
+                  value={`${window.location.origin}${fileSaveApi.genLocalGetFile(r.fileId)}`}
+                  icon={fileSaveApi.genLocalGetFile(r.iconId)}
+                />
+                <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank">点击下载</a>
+              </div>
+            )}
+          >
+            <a>{r.name}</a>
+          </Popover>
+        )
+      },
+      BaseTableUtils.genSimpleSorterColumn('应用包名', 'applicationId', undefined, sorter),
+      BaseTableUtils.genSimpleSorterColumn('当前版本号', 'versionCode', 120, sorter),
+      BaseTableUtils.genSimpleSorterColumn('当前版本名称', 'versionName', 120, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {

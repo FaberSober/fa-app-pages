@@ -49,7 +49,9 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
 
   function getInitialValues() {
     return {
+      fileId: get(record, 'fileId'),
       name: get(record, 'name'),
+      shortCode: get(record, 'shortCode'),
       applicationId: get(record, 'applicationId'),
       versionCode: get(record, 'versionCode'),
       versionName: get(record, 'versionName'),
@@ -81,7 +83,7 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
       >
         <Form form={form} onFinish={onFinish}>
           <Form.Item name="fileId" label="选择APK" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
-            <UploadFileLocal accept=".apk" />
+            <UploadFileLocal accept=".apk" disabled />
           </Form.Item>
           <Form.Item name="name" label="应用名称" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input disabled />
