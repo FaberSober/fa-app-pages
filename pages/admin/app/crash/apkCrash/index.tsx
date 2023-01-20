@@ -4,7 +4,7 @@ import { Button, Form, Input, Space } from 'antd';
 import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, FaberTable, FaHref, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkCrashApi as api } from '@/services';
 import { App } from '@/types';
-import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
+import ApkCrashView from "@features/fa-app-pages/pages/admin/app/crash/apkCrash/cube/ApkCrashView";
 
 const serviceName = 'APP-APK崩溃日志表';
 const biz = 'app_apk_crash';
@@ -47,7 +47,7 @@ export default function ApkCrashList() {
         render: (_, r) => (
           <Space>
             <BaseDrawer title="查看崩溃日志详情" triggerDom={<FaHref icon={<EyeOutlined />} text="详情" />} width={1000}>
-              <ApkVersionList appId={r.id} />
+              <ApkCrashView apkCrash={r} />
             </BaseDrawer>
             <AuthDelBtn handleDelete={() => handleDelete(r.id)} />
           </Space>
