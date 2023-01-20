@@ -40,6 +40,39 @@ namespace App {
     /** APK文件ID */
     fileId: string;
   }
+
+  /** APP-APK崩溃日志表 */
+  export interface ApkCrash extends Fa.BaseDelEntity {
+    /** ID */
+    id: number;
+    /** 应用ID */
+    appId: number;
+    /** 应用名称 */
+    name: string;
+    /** 应用包名 */
+    applicationId: string;
+    /** 版本号 */
+    versionCode: number;
+    /** 版本名称 */
+    versionName: string;
+    /** 错误日志 */
+    message: string;
+    /** 崩溃日志详情 */
+    detail: string;
+    /** 崩溃时间 */
+    crashTime: string;
+    /** rom信息 */
+    romInfo: string;
+    /** 设备厂商 */
+    deviceManufacturer: string;
+    /** 设备型号 */
+    deviceModel: string;
+    /** android版本 */
+    androidVersion: number;
+    /** sdk版本 */
+    androidSdk: string;
+  }
+
 }
 
 export default App;

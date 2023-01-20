@@ -6,6 +6,7 @@ export default {
     /** app服务 */
     app: {
       app: '/api/app/app',
+      crash: '/api/app/crash',
     },
   },
 } as Fa.ConfigApp
