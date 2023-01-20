@@ -1,9 +1,10 @@
 import React from 'react';
-import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownloadOutlined, EyeOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Space } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, useDelete, useExport, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, FaberTable, FaHref, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkCrashApi as api } from '@/services';
 import { App } from '@/types';
+import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
 
 const serviceName = 'APP-APK崩溃日志表';
 const biz = 'app_apk_crash';
@@ -25,13 +26,19 @@ export default function ApkCrashList() {
     const { sorter } = queryParams;
     return [
       BaseTableUtils.genIdColumn('ID', 'id', 70, sorter),
-      BaseTableUtils.genSimpleSorterColumn('应用ID', 'appId', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('应用包名', 'applicationId', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('错误日志', 'message', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('应用ID', 'appId', 100, sorter, false),
+      BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 130, sorter),
+      BaseTableUtils.genSimpleSorterColumn('应用包名', 'applicationId', 200, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 80, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本名', 'versionName', 80, sorter),
+      BaseTableUtils.genSimpleSorterColumn('错误日志', 'message', 200, sorter),
       // BaseTableUtils.genSimpleSorterColumn('崩溃日志详情', 'detail', 100, sorter),
+      BaseTableUtils.genTimeSorterColumn('崩溃时间', 'crashTime', 170, sorter),
+      BaseTableUtils.genSimpleSorterColumn('rom信息', 'romInfo', 200, sorter, false),
+      BaseTableUtils.genSimpleSorterColumn('设备厂商', 'deviceManufacturer', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('设备型号', 'deviceModel', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('系统版本', 'androidVersion', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('sdk版本', 'androidSdk', 85, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {
@@ -39,6 +46,9 @@ export default function ApkCrashList() {
         dataIndex: 'menu',
         render: (_, r) => (
           <Space>
+            <BaseDrawer title="查看崩溃日志详情" triggerDom={<FaHref icon={<EyeOutlined />} text="详情" />} width={1000}>
+              <ApkVersionList appId={r.id} />
+            </BaseDrawer>
             <AuthDelBtn handleDelete={() => handleDelete(r.id)} />
           </Space>
         ),
