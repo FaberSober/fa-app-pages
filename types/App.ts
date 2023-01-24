@@ -15,6 +15,8 @@ namespace App {
     versionName: string;
     /** apk文件ID */
     fileId: string;
+    /** 文件大小 */
+    size: number;
     /** 图标文件ID */
     iconId: string;
     /** 短链 */
@@ -41,6 +43,8 @@ namespace App {
     iconId: string;
     /** APK文件ID */
     fileId: string;
+    /** 文件大小 */
+    size: number;
     /** 版本信息 */
     remark: string;
   }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popover, QRCode, Space } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, useDelete, useExport, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkVersionApi as api, fileSaveApi } from '@/services';
 import { App } from '@/types';
 
@@ -60,6 +60,10 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
       },
       BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 120, sorter),
       BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 120, sorter),
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 120, sorter),
+        render: (val) => FaUtils.sizeToHuman(val),
+      },
       BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
