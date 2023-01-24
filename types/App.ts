@@ -19,6 +19,8 @@ namespace App {
     iconId: string;
     /** 短链 */
     shortCode: string;
+    /** 版本信息 */
+    remark: string;
   }
 
   /** APP-APK版本表 */
@@ -39,6 +41,8 @@ namespace App {
     iconId: string;
     /** APK文件ID */
     fileId: string;
+    /** 版本信息 */
+    remark: string;
   }
 
   /** APP-APK崩溃日志表 */

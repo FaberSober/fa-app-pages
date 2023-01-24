@@ -60,6 +60,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
       },
       BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 120, sorter),
       BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 120, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {

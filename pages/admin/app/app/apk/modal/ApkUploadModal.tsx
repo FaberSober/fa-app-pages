@@ -33,6 +33,7 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
       versionCode: undefined,
       versionName: undefined,
       iconId: undefined,
+      remark: undefined,
     }
   }
 
@@ -88,6 +89,9 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
           </Form.Item>
           <Form.Item name="iconId" label="图标文件" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <UploadImgLocal disabled />
+          </Form.Item>
+          <Form.Item name="remark" label="版本信息" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
+            <Input />
           </Form.Item>
         </Form>
       </DragModal>

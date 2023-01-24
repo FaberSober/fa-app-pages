@@ -56,6 +56,7 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
       versionCode: get(record, 'versionCode'),
       versionName: get(record, 'versionName'),
       iconId: get(record, 'iconId'),
+      remark: get(record, 'remark'),
     }
   }
 
@@ -102,6 +103,9 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
           </Form.Item>
           <Form.Item name="iconId" label="图标文件" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <UploadImgLocal disabled />
+          </Form.Item>
+          <Form.Item name="remark" label="版本信息" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
+            <Input />
           </Form.Item>
         </Form>
       </DragModal>
