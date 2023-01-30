@@ -91,7 +91,7 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
             <UploadImgLocal disabled />
           </Form.Item>
           <Form.Item name="remark" label="版本信息" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
-            <Input.TextArea />
+            <Input.TextArea autoSize />
           </Form.Item>
         </Form>
       </DragModal>

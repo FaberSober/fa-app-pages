@@ -60,7 +60,11 @@ export default function Index() {
         ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 120, sorter),
         render: (val) => FaUtils.sizeToHuman(val),
       },
-      BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
+        // render: (val) => <span className={}>{val}</span>,
+        className: 'fa-break-word',
+      },
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {
@@ -68,7 +72,7 @@ export default function Index() {
         dataIndex: 'menu',
         render: (_, r) => (
           <Space>
-            <BaseDrawer title="APK历史版本列表" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本" />} width={1000}>
+            <BaseDrawer title="APK历史版本列表" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本" />} width={1200}>
               <ApkVersionList appId={r.id} />
             </BaseDrawer>
             <ApkModal editBtn title={`编辑${serviceName}信息`} record={r} fetchFinish={fetchPageList} />
