@@ -66,7 +66,7 @@ export default function ApkCrashList() {
         <strong style={{ fontSize: '18px' }}>{serviceName}</strong>
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
           <Form form={form} layout="inline" onFinish={setFormValues}>
-            <Form.Item name="message" label="搜索">
+            <Form.Item name="message" label="错误日志">
               <Input placeholder="请输入错误日志" />
             </Form.Item>
           </Form>
