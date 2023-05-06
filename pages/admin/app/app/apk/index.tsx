@@ -100,7 +100,7 @@ export default function Index() {
 
           <Space>
             <Button onClick={() => form.submit()} loading={loading} icon={<SearchOutlined />}>查询</Button>
-            <Button onClick={() => clearForm(form)} loading={loading}>重置</Button>
+            <Button onClick={() => clearForm(form)}>重置</Button>
             <ApkUploadModal addBtn title="上传APK" fetchFinish={fetchPageList} />
             <Button loading={exporting} icon={<DownloadOutlined />} onClick={fetchExportExcel}>导出</Button>
           </Space>
