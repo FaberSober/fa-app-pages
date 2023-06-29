@@ -85,7 +85,7 @@ export default function index() {
           },
         ]}
         expandable={{
-          expandedRowRender: (r:App.ApkVersion) => <p style={{ margin: 0 }}>{r.remark}</p>,
+          expandedRowRender: (r:App.ApkVersion) => <div className="fa-break-word">{r.remark}</div>,
         }}
         size="small"
         pagination={false}
