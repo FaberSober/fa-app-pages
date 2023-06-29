@@ -60,6 +60,7 @@ export default function Index() {
         ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 120, sorter),
         render: (val) => FaUtils.sizeToHuman(val),
       },
+      BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 100, sorter),
       {
         ...BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
         // render: (val) => <span className={}>{val}</span>,

@@ -17,6 +17,8 @@ namespace App {
     fileId: string;
     /** 文件大小 */
     size: number;
+    /** 下载次数 */
+    downloadNum: number;
     /** 图标文件ID */
     iconId: string;
     /** 短链 */
@@ -45,6 +47,8 @@ namespace App {
     fileId: string;
     /** 文件大小 */
     size: number;
+    /** 下载次数 */
+    downloadNum: number;
     /** 版本信息 */
     remark: string;
   }
