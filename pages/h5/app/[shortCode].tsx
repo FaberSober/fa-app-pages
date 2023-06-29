@@ -35,14 +35,14 @@ export default function index() {
   function handleDownloadNew() {
     if (apk === undefined) return
 
-    window.open(fileSaveApi.genLocalGetFile(apk.fileId), "_blank")
+    window.open(fileSaveApi.genLocalGetFile(apk.fileId))
     // 下载次数+1
     if (apkVersionList === undefined || apkVersionList.length === 0) return;
     apkVersionApi.addDownloadNum({ id: apkVersionList[apkVersionList.length - 1].id})
   }
 
   function handleDownloadVer(ver: App.ApkVersion) {
-    window.open(fileSaveApi.genLocalGetFile(ver.fileId), "_blank")
+    window.open(fileSaveApi.genLocalGetFile(ver.fileId))
     // 下载次数+1
     if (apkVersionList === undefined || apkVersionList.length === 0) return;
     apkVersionApi.addDownloadNum({ id: ver.id})
@@ -71,8 +71,8 @@ export default function index() {
         rowKey="id"
         dataSource={apkVersionList}
         columns={[
-          {title: '版本名称', dataIndex: 'versionName'},
-          {title: '发布时间', dataIndex: 'crtTime'},
+          {title: '版本', dataIndex: 'versionName'},
+          {title: '发布时间', dataIndex: 'crtTime', width: 170},
           {
             title: '操作',
             render: (_, r:App.ApkVersion) => {
@@ -81,7 +81,8 @@ export default function index() {
                   <Button onClick={() => handleDownloadVer(r)} size="small">下载</Button>
                 </div>
               )
-            }
+            },
+            width: 70
           },
         ]}
         expandable={{
