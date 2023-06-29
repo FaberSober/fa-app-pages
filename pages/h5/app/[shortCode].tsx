@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {App} from "@features/fa-app-pages/types";
 import {apkApi, apkVersionApi} from "@features/fa-app-pages/services";
 import {fileSaveApi} from "@features/fa-admin-pages/services";
-import {ApiEffectLayoutContext, FaLabel, PageLoading} from "@fa/ui";
+import {FaLabel, PageLoading} from "@fa/ui";
 import {Button, Empty, Table} from "antd";
 import {DownloadOutlined} from '@ant-design/icons';
 
@@ -32,6 +32,22 @@ export default function index() {
     }).catch(() => setLoading(false))
   }, [shortCode])
 
+  function handleDownloadNew() {
+    if (apk === undefined) return
+
+    window.open(fileSaveApi.genLocalGetFile(apk.fileId), "_blank")
+    // 下载次数+1
+    if (apkVersionList === undefined || apkVersionList.length === 0) return;
+    apkVersionApi.addDownloadNum({ id: apkVersionList[apkVersionList.length - 1].id})
+  }
+
+  function handleDownloadVer(ver: App.ApkVersion) {
+    window.open(fileSaveApi.genLocalGetFile(ver.fileId), "_blank")
+    // 下载次数+1
+    if (apkVersionList === undefined || apkVersionList.length === 0) return;
+    apkVersionApi.addDownloadNum({ id: ver.id})
+  }
+
   if (loading) return <PageLoading />
   if (apk === undefined) return <Empty description="未找到APP信息" />
 
@@ -46,7 +62,7 @@ export default function index() {
         <div className="fa-mb12">{apk.versionCode}</div>
 
         <div style={{ width: '50%' }}>
-          <Button type="primary" block size="large" icon={<DownloadOutlined />} style={{ borderRadius: 20 }}>下&nbsp;载</Button>
+          <Button onClick={handleDownloadNew} type="primary" block size="large" icon={<DownloadOutlined />} style={{ borderRadius: 20 }}>下&nbsp;载</Button>
         </div>
       </div>
 
@@ -62,7 +78,7 @@ export default function index() {
             render: (_, r:App.ApkVersion) => {
               return (
                 <div>
-                  <Button size="small">下载</Button>
+                  <Button onClick={() => handleDownloadVer(r)} size="small">下载</Button>
                 </div>
               )
             }

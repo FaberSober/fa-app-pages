@@ -42,9 +42,10 @@ export default function Index() {
               <div className="fa-flex-column-center">
                 <QRCode
                   errorLevel="H"
-                  value={`${window.location.origin}${fileSaveApi.genLocalGetFile(r.fileId)}`}
+                  value={`${window.location.origin}/h5/app/${r.shortCode}`}
                   icon={fileSaveApi.genLocalGetFile(r.iconId)}
                 />
+                <a href={`${window.location.origin}/h5/app/${r.shortCode}`} target="_blank">打开下载页面</a>
                 <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank">点击下载</a>
               </div>
             )}
