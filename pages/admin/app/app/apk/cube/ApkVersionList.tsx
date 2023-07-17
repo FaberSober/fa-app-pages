@@ -34,12 +34,16 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
     return [
       BaseTableUtils.genIdColumn('ID', 'id', 70, sorter),
       {
-        ...BaseTableUtils.genSimpleSorterColumn('图标', 'iconId', 100, sorter),
+        ...BaseTableUtils.genSimpleSorterColumn('图标', 'iconId', 60, sorter),
         sorter: false,
-        render: (_, r) => <img style={{width: 30, height: 30}} src={fileSaveApi.genLocalGetFile(r.iconId)} />
+        render: (_, r) => (
+          <div className="fa-flex-row-center">
+            <img alt={r.name} style={{width: 20, height: 20}} src={fileSaveApi.genLocalGetFile(r.iconId)} />
+          </div>
+        )
       },
       {
-        ...BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 150, sorter),
+        ...BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 100, sorter),
         render: (_, r) => (
           <Popover
             title="下载"
@@ -58,10 +62,10 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
           </Popover>
         )
       },
-      BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 120, sorter),
-      BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 120, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 100, sorter),
       {
-        ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 120, sorter),
+        ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 100, sorter),
         render: (val) => FaUtils.sizeToHuman(val),
       },
       BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 100, sorter),
