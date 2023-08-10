@@ -6,7 +6,7 @@ import { apkCrashApi as api } from '@/services';
 import { App } from '@/types';
 import ApkCrashView from "@features/fa-app-pages/pages/admin/app/crash/apkCrash/cube/ApkCrashView";
 
-const serviceName = 'APP-APK崩溃日志表';
+const serviceName = 'APK崩溃日志表';
 const biz = 'app_apk_crash';
 
 /**

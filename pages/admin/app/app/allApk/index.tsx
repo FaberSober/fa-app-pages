@@ -8,7 +8,7 @@ import ApkModal from './modal/ApkModal';
 import ApkUploadModal from './modal/ApkUploadModal';
 import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
 
-const serviceName = 'APP版本管理';
+const serviceName = '全部APP版本';
 const biz = 'app_apk';
 
 /**
@@ -18,7 +18,7 @@ export default function Index() {
   const [form] = Form.useForm();
 
   const { queryParams, setFormValues, handleTableChange, setSceneId, setConditionList, fetchPageList, loading, list, paginationProps } =
-    useTableQueryParams<App.Apk>(api.minePage, {}, serviceName)
+    useTableQueryParams<App.Apk>(api.page, {}, serviceName)
 
   const [handleDelete] = useDelete<number>(api.remove, fetchPageList, serviceName)
   const [exporting, fetchExportExcel] = useExport(api.exportExcel, queryParams)
