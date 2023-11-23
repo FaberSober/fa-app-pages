@@ -13,7 +13,7 @@ import {DownloadOutlined} from '@ant-design/icons';
  * @author xu.pengfei
  * @date 2023/6/29 15:10
  */
-export default function index() {
+export default function H5App() {
   const {shortCode} = useParams()
 
   const [loading, setLoading] = useState(false)

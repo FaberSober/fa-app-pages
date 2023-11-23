@@ -14,7 +14,7 @@ const biz = 'app_apk';
 /**
  * APP-APK表表格查询
  */
-export default function Index() {
+export default function ApkList() {
   const [form] = Form.useForm();
 
   const { queryParams, setFormValues, handleTableChange, setSceneId, setConditionList, fetchPageList, loading, list, paginationProps } =
