@@ -4,6 +4,7 @@ import { Button, Form, Input, Popover, QRCode, Space } from 'antd';
 import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkVersionApi as api, fileSaveApi } from '@/services';
 import { App } from '@/types';
+import ApkVersionModal from "@features/fa-app-pages/pages/admin/app/app/apk/modal/ApkVersionModal";
 
 const serviceName = 'APK历史版本';
 const biz = 'app_apk_version';
@@ -80,10 +81,11 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
         dataIndex: 'menu',
         render: (_, r) => (
           <Space>
+            <ApkVersionModal editBtn title={`编辑${serviceName}信息`} record={r} fetchFinish={fetchPageList} />
             <AuthDelBtn handleDelete={() => handleDelete(r.id)} />
           </Space>
         ),
-        width: 80,
+        width: 115,
         fixed: 'right',
         tcRequired: true,
         tcType: 'menu',

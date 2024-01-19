@@ -74,7 +74,7 @@ export default function ApkList() {
         dataIndex: 'menu',
         render: (_, r) => (
           <Space>
-            <BaseDrawer title="APK历史版本列表" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本" />} width={1200}>
+            <BaseDrawer title="APK历史版本列表" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本" />} width={1300}>
               <ApkVersionList appId={r.id} />
             </BaseDrawer>
             <ApkModal editBtn title={`编辑${serviceName}信息`} record={r} fetchFinish={fetchPageList} />
