@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Popover, QRCode, Space } from 'antd';
+import { Button, Form, Input, Popover, QRCode, Space, Switch } from 'antd';
 import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkVersionApi as api, fileSaveApi } from '@/services';
 import { App } from '@/types';
@@ -19,7 +19,7 @@ export interface ApkVersionListProps {
 export default function ApkVersionList({appId}:ApkVersionListProps) {
   const [form] = Form.useForm();
 
-  const { queryParams, setFormValues, handleTableChange, setSceneId, setConditionList, setExtraParams, fetchPageList, loading, list, paginationProps } =
+  const { queryParams, setFormValues, handleTableChange, setSceneId, setConditionList, setExtraParams, fetchPageList, loading, list, setList, paginationProps } =
     useTableQueryParams<App.ApkVersion>(api.page, {extraParams:{appId}}, serviceName)
 
   const [handleDelete] = useDelete<number>(api.remove, fetchPageList, serviceName)
@@ -35,7 +35,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
     return [
       BaseTableUtils.genIdColumn('ID', 'id', 70, sorter),
       {
-        ...BaseTableUtils.genSimpleSorterColumn('图标', 'iconId', 60, sorter),
+        ...BaseTableUtils.genSimpleSorterColumn('图标', 'iconId', 45, sorter),
         sorter: false,
         render: (_, r) => (
           <div className="fa-flex-row-center">
@@ -44,7 +44,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
         )
       },
       {
-        ...BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 100, sorter),
+        ...BaseTableUtils.genSimpleSorterColumn('应用名称', 'name', 120, sorter),
         render: (_, r) => (
           <Popover
             title="下载"
@@ -63,13 +63,24 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
           </Popover>
         )
       },
-      BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 100, sorter),
-      BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本号', 'versionCode', 90, sorter),
+      BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 90, sorter),
       {
-        ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 100, sorter),
+        ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 90, sorter),
         render: (val) => FaUtils.sizeToHuman(val),
       },
-      BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 90, sorter),
+      {
+        ...BaseTableUtils.genBoolSorterColumn('强制更新', 'forceUpdate', 90, sorter),
+        render: (_v, r) => (
+          <ForceUpdate
+            item={r}
+            onChange={() => {
+              setList(list.map(i => i.id === r.id ? {...i, forceUpdate: !i.forceUpdate } : i))
+            }}
+          />
+        )
+      },
       {
         ...BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
         className: 'fa-break-word',
@@ -127,4 +138,26 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
       />
     </div>
   );
+}
+
+function ForceUpdate({ item, onChange }: {item: App.ApkVersion, onChange: (i: App.ApkVersion) => void}) {
+  const [loading, setLoading] = useState(false)
+
+  function handleEnableUpdate(forceUpdate: boolean) {
+    setLoading(true)
+    api.update(item.id, { ...item, forceUpdate }).then(_res => {
+      setLoading(false)
+      onChange(item)
+    }).catch(() => setLoading(false))
+  }
+
+  return (
+    <Switch
+      checkedChildren="强制"
+      unCheckedChildren="否"
+      checked={item.forceUpdate}
+      onChange={e => handleEnableUpdate(e)}
+      loading={loading}
+    />
+  )
 }

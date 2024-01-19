@@ -49,6 +49,8 @@ namespace App {
     size: number;
     /** 下载次数 */
     downloadNum: number;
+    /** 强制更新 */
+    forceUpdate: boolean;
     /** 版本信息 */
     remark: string;
   }
