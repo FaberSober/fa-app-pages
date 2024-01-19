@@ -70,10 +70,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
         render: (val) => FaUtils.sizeToHuman(val),
       },
       BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 100, sorter),
-      {
-        ...BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
-        className: 'fa-break-word',
-      },
+      BaseTableUtils.genEllipsisSorterColumn('版本信息', 'remark', undefined, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {

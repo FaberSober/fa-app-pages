@@ -81,10 +81,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
           />
         )
       },
-      {
-        ...BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
-        className: 'fa-break-word',
-      },
+      BaseTableUtils.genEllipsisSorterColumn('版本信息', 'remark', undefined, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {

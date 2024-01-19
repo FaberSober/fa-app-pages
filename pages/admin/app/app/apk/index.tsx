@@ -8,6 +8,7 @@ import ApkModal from './modal/ApkModal';
 import ApkUploadModal from './modal/ApkUploadModal';
 import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
 
+
 const serviceName = 'APP版本管理';
 const biz = 'app_apk';
 
@@ -62,11 +63,7 @@ export default function ApkList() {
         render: (val) => FaUtils.sizeToHuman(val),
       },
       BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 100, sorter),
-      {
-        ...BaseTableUtils.genSimpleSorterColumn('版本信息', 'remark', undefined, sorter),
-        // render: (val) => <span className={}>{val}</span>,
-        className: 'fa-break-word',
-      },
+      BaseTableUtils.genEllipsisSorterColumn('版本信息', 'remark', undefined, sorter),
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {
