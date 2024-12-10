@@ -93,7 +93,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
             <AuthDelBtn handleDelete={() => handleDelete(r.id)} />
           </Space>
         ),
-        width: 115,
+        width: 125,
         fixed: 'right',
         tcRequired: true,
         tcType: 'menu',
