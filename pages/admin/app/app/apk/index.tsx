@@ -1,9 +1,9 @@
 import React from 'react';
 import { DownloadOutlined, SearchOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popover, QRCode, Space } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, FaberTable, FaHref, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, type FaberTable, FaHref, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkApi as api, fileSaveApi } from '@/services';
-import { App } from '@/types';
+import type { App } from '@/types';
 import ApkModal from './modal/ApkModal';
 import ApkUploadModal from './modal/ApkUploadModal';
 import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
@@ -46,8 +46,8 @@ export default function ApkList() {
                   value={`${window.location.origin}/h5/app/${r.shortCode}`}
                   icon={fileSaveApi.genLocalGetFile(r.iconId)}
                 />
-                <a href={`${window.location.origin}/h5/app/${r.shortCode}`} target="_blank">打开下载页面</a>
-                <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank">点击下载</a>
+                <a href={`${window.location.origin}/h5/app/${r.shortCode}`} target="_blank" rel="noreferrer">打开下载页面</a>
+                <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank" rel="noreferrer">点击下载</a>
               </div>
             )}
           >

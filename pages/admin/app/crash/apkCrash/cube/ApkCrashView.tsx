@@ -1,5 +1,5 @@
 import React from 'react';
-import { App } from "@features/fa-app-pages/types";
+import type { App } from "@features/fa-app-pages/types";
 import { Descriptions } from "antd";
 
 

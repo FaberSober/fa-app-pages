@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {App} from "@features/fa-app-pages/types";
+import type {App} from "@features/fa-app-pages/types";
 import {apkApi, apkVersionApi} from "@features/fa-app-pages/services";
 import {fileSaveApi} from "@features/fa-admin-pages/services";
 import {FaLabel, PageLoading} from "@fa/ui";

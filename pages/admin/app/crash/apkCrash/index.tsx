@@ -1,9 +1,9 @@
 import React from 'react';
 import { DownloadOutlined, EyeOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Space } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, FaberTable, FaHref, useDelete, useExport, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, type FaberTable, FaHref, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkCrashApi as api } from '@/services';
-import { App } from '@/types';
+import type { App } from '@/types';
 import ApkCrashView from "@features/fa-app-pages/pages/admin/app/crash/apkCrash/cube/ApkCrashView";
 
 const serviceName = 'APK崩溃日志表';

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DownloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popover, QRCode, Space, Switch } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, FaberTable, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, type FaberTable, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkVersionApi as api, fileSaveApi } from '@/services';
-import { App } from '@/types';
+import type { App } from '@/types';
 import ApkVersionModal from '../modal/ApkVersionModal';
 
 const serviceName = 'APK历史版本';
@@ -55,7 +55,7 @@ export default function ApkVersionList({appId}:ApkVersionListProps) {
                   value={`${window.location.origin}${fileSaveApi.genLocalGetFile(r.fileId)}`}
                   icon={fileSaveApi.genLocalGetFile(r.iconId)}
                 />
-                <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank">点击下载</a>
+                <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank" rel="noreferrer">点击下载</a>
               </div>
             )}
           >

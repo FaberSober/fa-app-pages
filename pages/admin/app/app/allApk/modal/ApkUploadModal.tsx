@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-import { ApiEffectLayoutContext, CommonModalProps, DragModal, FaUtils, UploadFileLocal, UploadImgLocal } from '@fa/ui';
+import { ApiEffectLayoutContext, type CommonModalProps, DragModal, FaUtils, UploadFileLocal, UploadImgLocal } from '@fa/ui';
 import { apkApi as api } from '@/services';
-import { App } from '@/types';
+import type { App } from '@/types';
 
 
 /**

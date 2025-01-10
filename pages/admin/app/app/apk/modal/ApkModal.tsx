@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react';
 import { get } from 'lodash';
 import { Button, Form, Input } from 'antd';
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { ApiEffectLayoutContext, CommonModalProps, DragModal, FaHref, FaUtils, UploadFileLocal, UploadImgLocal } from '@fa/ui';
+import { ApiEffectLayoutContext, type CommonModalProps, DragModal, FaHref, FaUtils, UploadFileLocal, UploadImgLocal } from '@fa/ui';
 import { apkApi as api } from '@/services';
-import { App } from '@/types';
+import type { App } from '@/types';
 
 
 /**

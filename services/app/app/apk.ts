@@ -1,7 +1,7 @@
 import { GATE_APP } from '@/configs';
 import { BaseApi } from '@fa/ui';
-import { App } from '@/types';
-import { Fa } from "@fa/ui/src";
+import type { App } from '@/types';
+import type { Fa } from "@fa/ui/src";
 
 /** ------------------------------------------ xx 操作接口 ------------------------------------------ */
 class Api extends BaseApi<App.Apk, number> {
