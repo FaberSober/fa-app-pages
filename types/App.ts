@@ -1,6 +1,41 @@
 import type { Fa } from '@fa/ui';
 
 namespace App {
+  /** Desktop 客户端应用 */
+  export interface ClientApp extends Fa.BaseDelEntity {
+    id: string;
+    clientCode: string;
+    name: string;
+    identifier: string;
+    enabled: boolean;
+    remark: string;
+  }
+
+  /** Desktop 客户端版本发布记录 */
+  export interface ClientRelease extends Fa.BaseDelEntity {
+    id: string;
+    clientId: string;
+    versionName: string;
+    versionCode: string;
+    channel: string;
+    status: string;
+    releaseNotes: string;
+    publishTime: string;
+  }
+
+  /** Desktop 客户端平台安装包 */
+  export interface ClientReleaseArtifact extends Fa.BaseDelEntity {
+    id: string;
+    releaseId: string;
+    platform: string;
+    arch: string;
+    fileId: string;
+    fileName: string;
+    size: number;
+    sha256: string;
+    signature: string;
+  }
+
   /** APP-APK表 */
   export interface Apk extends Fa.BaseDelEntity {
     /** ID */
@@ -86,7 +121,6 @@ namespace App {
     /** sdk版本 */
     androidSdk: string;
   }
-
 }
 
 export default App;
