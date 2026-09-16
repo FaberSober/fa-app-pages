@@ -11,9 +11,10 @@ const biz = 'app_client_release_artifact';
 
 export interface ClientReleaseArtifactListProps {
   releaseId: string;
+  readOnly?: boolean;
 }
 
-export default function ClientReleaseArtifactList({ releaseId }: ClientReleaseArtifactListProps) {
+export default function ClientReleaseArtifactList({ releaseId, readOnly = false }: ClientReleaseArtifactListProps) {
   const [form] = Form.useForm();
   const { queryParams, setFormValues, handleTableChange, setSceneId, setConditionList, setExtraParams, fetchPageList, loading, list, paginationProps } =
     useTableQueryParams<App.ClientReleaseArtifact>(api.page, { extraParams: { releaseId } }, serviceName);
@@ -53,8 +54,8 @@ export default function ClientReleaseArtifactList({ releaseId }: ClientReleaseAr
         dataIndex: 'menu',
         render: (_: unknown, record: App.ClientReleaseArtifact) => (
           <Space>
-            <ClientReleaseArtifactModal editBtn title={`编辑${serviceName}`} record={record} releaseId={releaseId} fetchFinish={fetchPageList} />
-            <AuthDelBtn handleDelete={() => handleDelete(record.id)} />
+            {!readOnly && <ClientReleaseArtifactModal editBtn title={`编辑${serviceName}`} record={record} releaseId={releaseId} fetchFinish={fetchPageList} />}
+            {!readOnly && <AuthDelBtn handleDelete={() => handleDelete(record.id)} />}
           </Space>
         ),
         width: 125,
@@ -79,7 +80,7 @@ export default function ClientReleaseArtifactList({ releaseId }: ClientReleaseAr
               查询
             </Button>
             <Button onClick={() => clearForm(form)}>重置</Button>
-            <ClientReleaseArtifactModal addBtn title={`新增${serviceName}`} releaseId={releaseId} fetchFinish={fetchPageList} />
+            {!readOnly && <ClientReleaseArtifactModal addBtn title={`新增${serviceName}`} releaseId={releaseId} fetchFinish={fetchPageList} />}
             <Button loading={exporting} icon={<DownloadOutlined />} onClick={fetchExportExcel}>
               导出
             </Button>
