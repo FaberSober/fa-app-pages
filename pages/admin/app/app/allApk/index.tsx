@@ -1,12 +1,12 @@
-import React from 'react';
 import { DownloadOutlined, SearchOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popover, QRCode, Space } from 'antd';
-import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, type FaberTable, FaHref, FaUtils, useDelete, useExport, useTableQueryParams } from '@fa/ui';
+import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, type FaberTable, FaHref, FaUtils, ShiroPermissionContainer, useDelete, useExport, useTableQueryParams } from '@fa/ui';
 import { apkApi as api, fileSaveApi } from '@/services';
 import type { App } from '@/types';
 import ApkModal from './modal/ApkModal';
 import ApkUploadModal from './modal/ApkUploadModal';
 import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
+import AppReleaseList from '../apk/cube/AppReleaseList';
 
 const serviceName = '全部APP版本';
 const biz = 'app_apk';
@@ -73,11 +73,16 @@ export default function AllApkList() {
             <BaseDrawer title="APK历史版本列表" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本" />} size={1200}>
               <ApkVersionList appId={r.id} />
             </BaseDrawer>
+            <ShiroPermissionContainer permission="/admin/app/app/apk">
+              <BaseDrawer title={`${r.name} 版本发布`} triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本发布" />} size={1400}>
+                <AppReleaseList app={r} />
+              </BaseDrawer>
+            </ShiroPermissionContainer>
             <ApkModal editBtn title={`编辑${serviceName}信息`} record={r} fetchFinish={fetchPageList} />
             <AuthDelBtn handleDelete={() => handleDelete(r.id)} />
           </Space>
         ),
-        width: 180,
+        width: 270,
         fixed: 'right',
         tcRequired: true,
         tcType: 'menu',

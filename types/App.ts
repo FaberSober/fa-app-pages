@@ -1,6 +1,35 @@
 import type { Fa } from '@fa/ui';
 
 namespace App {
+  export interface AppRelease extends Fa.BaseDelEntity {
+    id: string;
+    appId: number;
+    versionName: string;
+    versionCode: string;
+    channel: string;
+    status: 'DRAFT' | 'PUBLISHED' | 'REVOKED';
+    forceUpdate: boolean;
+    minSupportedVersionCode: string | null;
+    rolloutPercent: number;
+    targetDeviceIds: string | null;
+    autoRollback: boolean;
+    rollbackErrorThreshold: number;
+    rollbackWindowMinutes: number;
+    releaseNote: string | null;
+    publishTime: string | null;
+  }
+
+  export interface AppReleasePackage extends Fa.BaseDelEntity {
+    id: string;
+    releaseId: string;
+    platform: string;
+    packageType: string;
+    baseVersionCode: string | null;
+    fileId: string;
+    size: number;
+    sha256: string;
+  }
+
   /** Desktop 客户端应用 */
   export interface ClientApp extends Fa.BaseDelEntity {
     id: string;
