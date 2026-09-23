@@ -24,7 +24,6 @@ namespace App {
     releaseId: string;
     platform: string;
     packageType: string;
-    baseVersionCode: string | null;
     fileId: string;
     size: number;
     sha256: string;
@@ -115,6 +114,8 @@ namespace App {
     downloadNum: number;
     /** 强制更新 */
     forceUpdate: boolean;
+    /** APK文件SHA-256摘要 */
+    sha256: string | null;
     /** 版本信息 */
     remark: string;
   }

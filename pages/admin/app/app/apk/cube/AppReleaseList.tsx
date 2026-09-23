@@ -1,16 +1,17 @@
 import { CheckCircleOutlined, CloseCircleOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, type FaberTable, FaHref, FaUtils, useDelete, useTableQueryParams } from '@fa/ui';
-import { Button, Form, Input, Modal, Select, Space, Tag } from 'antd';
+import { Alert, Button, Form, Input, Modal, Select, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { appReleaseApi as api, appReleasePackageApi } from '@/services';
 import type { App } from '@/types';
 import AppReleaseModal from '../modal/AppReleaseModal';
+import WgtReleaseCreateModal from '../modal/WgtReleaseCreateModal';
 import AppReleasePackageList from './AppReleasePackageList';
 
 export default function AppReleaseList({ app }: { app: App.Apk }) {
   const [form] = Form.useForm();
   const { queryParams, setFormValues, handleTableChange, setSceneId, setConditionList, setExtraParams, fetchPageList, loading, list, paginationProps } =
-    useTableQueryParams<App.AppRelease>(api.page, { extraParams: { appId: app.id } }, 'APP 版本发布');
+    useTableQueryParams<App.AppRelease>(api.page, { extraParams: { appId: app.id } }, '客户端更新发布');
   const [handleDelete] = useDelete<string>(api.remove, fetchPageList, 'APP 发布草稿');
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -22,19 +23,21 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
     appReleasePackageApi.byRelease(record.id).then((res) => {
       const packages = res.data;
       Modal.confirm({
-        title: `发布 ${app.name} ${record.versionName}？`,
+        title: `发布 ${app.name} 资源版本 ${record.versionName}？`,
         content: (
           <div>
             <p>
-              版本编码：{record.versionCode}；渠道：{record.channel}；灰度比例：{record.rolloutPercent}%
+              目标资源版本：{record.versionName}（{record.versionCode}）；渠道：{record.channel}；灰度比例：{record.rolloutPercent}%
             </p>
+            <p>最低兼容 APK：{record.minSupportedVersionCode ? `≥ ${record.minSupportedVersionCode}` : '不限'}</p>
             {packages.map((item) => (
               <p key={item.id}>
-                {item.packageType} · 基准版本 {item.baseVersionCode || '-'} · {FaUtils.sizeToHuman(item.size)} · SHA-256 {item.sha256}
+                {item.packageType === 'WGT' ? 'WGT 热更新' : item.packageType}
+                {` · ${FaUtils.sizeToHuman(item.size)} · SHA-256 ${item.sha256}`}
               </p>
             ))}
             {packages.length === 0 && <p>尚未上传发布包，服务端将拒绝发布。</p>}
-            {packages.length > 0 && packages.every((item) => item.packageType === 'WGT') && <p>当前只有 WGT；基准版本不匹配的客户端将无法更新。</p>}
+            {record.minSupportedVersionCode && <p>低于最低兼容 APK 版本的客户端不会收到此 WGT。</p>}
           </div>
         ),
         onOk: () => {
@@ -72,8 +75,12 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
     const { sorter } = queryParams;
     return [
       BaseTableUtils.genIdColumn('ID', 'id', 80, sorter),
-      BaseTableUtils.genSimpleSorterColumn('版本编码', 'versionCode', 120, sorter),
-      BaseTableUtils.genSimpleSorterColumn('版本名称', 'versionName', 120, sorter),
+      BaseTableUtils.genSimpleSorterColumn('目标资源编码', 'versionCode', 140, sorter),
+      BaseTableUtils.genSimpleSorterColumn('目标资源名称', 'versionName', 140, sorter),
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('最低兼容 APK', 'minSupportedVersionCode', 140, sorter),
+        render: (value: string | null) => (value ? `≥ ${value}` : '不限'),
+      },
       BaseTableUtils.genSimpleSorterColumn('渠道', 'channel', 100, sorter),
       {
         ...BaseTableUtils.genSimpleSorterColumn('状态', 'status', 100, sorter),
@@ -92,7 +99,7 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
         dataIndex: 'menu',
         render: (_: unknown, record: App.AppRelease) => (
           <Space>
-            <BaseDrawer title={`${record.versionName} 发布包`} triggerDom={<FaHref icon={<UnorderedListOutlined />} text="发布包" />} size={1100}>
+            <BaseDrawer title={`${record.versionName} 更新包`} triggerDom={<FaHref icon={<UnorderedListOutlined />} text="更新包" />} size={1100}>
               <AppReleasePackageList release={record} />
             </BaseDrawer>
             {record.status === 'DRAFT' && <AppReleaseModal editBtn title="编辑发布草稿" record={record} appId={app.id} fetchFinish={fetchPageList} />}
@@ -116,8 +123,8 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: 8 }}>
         <Space>
           <Form form={form} layout="inline" onFinish={setFormValues}>
-            <Form.Item name="versionName" label="版本">
-              <Input placeholder="版本名称" />
+            <Form.Item name="versionName" label="资源版本">
+              <Input placeholder="目标资源版本名称" />
             </Form.Item>
             <Form.Item name="channel" label="渠道">
               <Input placeholder="stable" />
@@ -137,9 +144,15 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
           </Form>
           <Button onClick={() => form.submit()}>查询</Button>
           <Button onClick={() => clearForm(form)}>重置</Button>
-          <AppReleaseModal addBtn title="新增发布草稿" appId={app.id} fetchFinish={fetchPageList} />
+          <WgtReleaseCreateModal app={app} fetchFinish={fetchPageList} />
         </Space>
       </div>
+      <Alert
+        type="info"
+        showIcon
+        style={{ margin: '0 8px 8px' }}
+        message="此处管理客户端更新发布；APK 安装包历史在“APK 安装包”中管理，WGT 目标资源版本由包内清单自动读取。"
+      />
       <BaseBizTable
         rowKey="id"
         biz="app_release"

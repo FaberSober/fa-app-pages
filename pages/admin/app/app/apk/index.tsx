@@ -71,17 +71,17 @@ export default function ApkList() {
         dataIndex: 'menu',
         render: (_, r) => (
           <Space>
-            <BaseDrawer title="APK历史版本列表" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本" />} size={1300}>
+            <BaseDrawer title="Android APK 安装包历史" triggerDom={<FaHref icon={<UnorderedListOutlined />} text="APK 安装包" />} size={1300}>
               <ApkVersionList appId={r.id} />
             </BaseDrawer>
-            <BaseDrawer title={`${r.name} 版本发布`} triggerDom={<FaHref icon={<UnorderedListOutlined />} text="版本发布" />} size={1400}>
+            <BaseDrawer title={`${r.name} 客户端更新发布`} triggerDom={<FaHref icon={<UnorderedListOutlined />} text="客户端更新" />} size={1400}>
               <AppReleaseList app={r} />
             </BaseDrawer>
             <ApkModal editBtn title={`编辑${serviceName}信息`} record={r} fetchFinish={fetchPageList} />
             <AuthDelBtn handleDelete={() => handleDelete(r.id)} />
           </Space>
         ),
-        width: 270,
+        width: 320,
         fixed: 'right',
         tcRequired: true,
         tcType: 'menu',

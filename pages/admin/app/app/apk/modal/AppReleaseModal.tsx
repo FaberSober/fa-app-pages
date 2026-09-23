@@ -1,6 +1,6 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { type CommonModalProps, DragModal, FaHref, FaUtils, useApiLoading } from '@fa/ui';
-import { Button, Form, Input, InputNumber, Switch } from 'antd';
+import { Alert, Button, Form, Input, InputNumber, Switch } from 'antd';
 import { useState } from 'react';
 import { appReleaseApi as api } from '@/services';
 import type { App } from '@/types';
@@ -74,17 +74,23 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
       )}
       {editBtn && <FaHref icon={<EditOutlined />} text="编辑" onClick={showModal} />}
       <DragModal title={title} open={open} onOk={() => form.submit()} confirmLoading={loading} onCancel={() => setOpen(false)} width={760}>
+        <Alert
+          type="info"
+          showIcon
+          style={{ marginBottom: 16 }}
+          message="这里填写客户端更新的目标资源版本。通过 WGT 创建草稿时，版本名称和编码会从包内清单自动读取。"
+        />
         <Form form={form} onFinish={onFinish}>
-          <Form.Item name="versionName" label="版本名称" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
+          <Form.Item name="versionName" label="目标资源版本名称" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input placeholder="例如 1.2.0" />
           </Form.Item>
           <Form.Item
             name="versionCode"
-            label="版本编码"
+            label="目标资源版本编码"
             rules={[{ required: true }, { pattern: positiveInteger, message: '请输入正整数' }]}
             {...FaUtils.formItemFullLayout}
           >
-            <Input placeholder="客户端 versionCode，按字符串输入" />
+            <Input placeholder="按字符串输入，避免大整数精度损失" />
           </Form.Item>
           <Form.Item name="channel" label="发布渠道" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input placeholder="stable" />
@@ -97,9 +103,10 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
           </Form.Item>
           <Form.Item
             name="minSupportedVersionCode"
-            label="最低支持版本"
+            label="最低兼容 APK"
             rules={[{ pattern: positiveInteger, message: '请输入正整数' }]}
             {...FaUtils.formItemFullLayout}
+            extra="留空表示不限制；低于此版本的客户端不会收到该 WGT。"
           >
             <Input placeholder="可留空" />
           </Form.Item>

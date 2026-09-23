@@ -27,6 +27,10 @@ export default function AppReleasePackageList({ release }: { release: App.AppRel
           刷新
         </Button>
       </Space>
+      <div style={{ marginBottom: 12, color: 'var(--ant-color-text-secondary)' }}>
+        目标版本是 WGT 资源版本；最低兼容 APK 在发布草稿中维护，当前要求：
+        {release.minSupportedVersionCode ? ` ≥ ${release.minSupportedVersionCode}` : ' 不限'}。
+      </div>
       <Table<App.AppReleasePackage>
         rowKey="id"
         loading={loading}
@@ -35,8 +39,7 @@ export default function AppReleasePackageList({ release }: { release: App.AppRel
         scroll={{ x: 900 }}
         columns={[
           { title: '平台', dataIndex: 'platform', width: 110, render: (value: string) => (value === 'APP_PLUS' ? 'APP-PLUS' : value) },
-          { title: '包类型', dataIndex: 'packageType', width: 100, render: (value: string) => <Tag>{value}</Tag> },
-          { title: '基准版本编码', dataIndex: 'baseVersionCode', width: 140, render: (value: string | null) => value || '-' },
+          { title: '包类型', dataIndex: 'packageType', width: 130, render: (value: string) => <Tag>{value === 'WGT' ? 'WGT 热更新' : value}</Tag> },
           {
             title: '文件',
             dataIndex: 'fileId',
