@@ -38,7 +38,8 @@ export default function H5App() {
     window.open(fileSaveApi.genLocalGetFile(apk.fileId))
     // 下载次数+1
     if (apkVersionList === undefined || apkVersionList.length === 0) return;
-    apkVersionApi.addDownloadNum({ id: apkVersionList[apkVersionList.length - 1].id})
+    const currentVersion = apkVersionList.find(version => String(version.versionCode) === String(apk.versionCode))
+    if (currentVersion) apkVersionApi.addDownloadNum({ id: currentVersion.id })
   }
 
   function handleDownloadVer(ver: App.ApkVersion) {
