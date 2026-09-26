@@ -52,6 +52,7 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
       name: get(record, 'name'),
       shortCode: get(record, 'shortCode'),
       applicationId: get(record, 'applicationId'),
+      dcloudAppId: get(record, 'dcloudAppId'),
       versionCode: get(record, 'versionCode'),
       versionName: get(record, 'versionName'),
       iconId: get(record, 'iconId'),
@@ -93,6 +94,9 @@ export default function ApkModal({ children, title, record, fetchFinish, addBtn,
           </Form.Item>
           <Form.Item name="applicationId" label="应用包名" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input disabled />
+          </Form.Item>
+          <Form.Item name="dcloudAppId" label="DCloud AppID" {...FaUtils.formItemFullLayout}>
+            <Input allowClear maxLength={128} placeholder="可选，uni-app 应用标识" />
           </Form.Item>
           <Form.Item name="versionCode" label="当前版本号" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input disabled />

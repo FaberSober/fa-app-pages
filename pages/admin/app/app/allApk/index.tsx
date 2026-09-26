@@ -5,6 +5,7 @@ import { apkApi as api, fileSaveApi } from '@/services';
 import type { App } from '@/types';
 import ApkModal from './modal/ApkModal';
 import ApkUploadModal from './modal/ApkUploadModal';
+import WgtAutoMatchUploadModal from './modal/WgtAutoMatchUploadModal';
 import ApkVersionList from "@features/fa-app-pages/pages/admin/app/app/apk/cube/ApkVersionList";
 import AppReleaseList from '../apk/cube/AppReleaseList';
 
@@ -105,6 +106,7 @@ export default function AllApkList() {
             <Button onClick={() => form.submit()} loading={loading} icon={<SearchOutlined />}>查询</Button>
             <Button onClick={() => clearForm(form)}>重置</Button>
             <ApkUploadModal addBtn title="上传APK" fetchFinish={fetchPageList} />
+            <WgtAutoMatchUploadModal fetchFinish={fetchPageList} />
             <Button loading={exporting} icon={<DownloadOutlined />} onClick={fetchExportExcel}>导出</Button>
           </Space>
         </div>

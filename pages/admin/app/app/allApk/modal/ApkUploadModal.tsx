@@ -29,6 +29,7 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
       name: undefined,
       shortCode: undefined,
       applicationId: undefined,
+      dcloudAppId: undefined,
       versionCode: undefined,
       versionName: undefined,
       iconId: undefined,
@@ -45,7 +46,7 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
   return (
     <span>
       <span onClick={showModal}>
-        <Button icon={<UploadOutlined />} type="primary">上传</Button>
+        <Button icon={<UploadOutlined />} type="primary">上传APK</Button>
       </span>
       <DragModal
         title={title}
@@ -79,6 +80,9 @@ export default function ApkUploadModal({ children, title, record, fetchFinish, a
           </Form.Item>
           <Form.Item name="applicationId" label="应用包名" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input disabled />
+          </Form.Item>
+          <Form.Item name="dcloudAppId" label="DCloud AppID" {...FaUtils.formItemFullLayout}>
+            <Input maxLength={128} placeholder="从 uni-app APK 自动读取，可修改" />
           </Form.Item>
           <Form.Item name="versionCode" label="当前版本号" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input disabled />

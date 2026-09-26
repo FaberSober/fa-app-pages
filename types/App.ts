@@ -19,6 +19,31 @@ namespace App {
     publishTime: string | null;
   }
 
+  export interface AppReleaseAutoMatchRet {
+    release: AppRelease;
+    appName: string;
+    applicationId: string;
+    dcloudAppId: string;
+  }
+
+  export interface AppReleaseAutoMatchRequest {
+    fileId: string;
+    minSupportedVersionCode?: string;
+    channel?: string;
+    releaseNote?: string;
+  }
+
+  export interface AppReleaseAutoMatchPreview {
+    appId: number;
+    appName: string;
+    applicationId: string;
+    dcloudAppId: string;
+    currentApkVersionCode: string | null;
+    currentApkVersionName: string | null;
+    wgtVersionName: string;
+    wgtVersionCode: string;
+  }
+
   export interface AppReleasePackage extends Fa.BaseDelEntity {
     id: string;
     releaseId: string;
@@ -72,6 +97,8 @@ namespace App {
     name: string;
     /** 应用包名 */
     applicationId: string;
+    /** DCloud AppID */
+    dcloudAppId: string | null;
     /** 当前版本号 */
     versionCode: string;
     /** 当前版本名称 */
