@@ -47,7 +47,11 @@ export default function ApkList() {
                   icon={fileSaveApi.genLocalGetFile(r.iconId)}
                 />
                 <a href={`${window.location.origin}/h5/app/${r.shortCode}`} target="_blank" rel="noreferrer">打开下载页面</a>
-                <a href={fileSaveApi.genLocalGetFile(r.fileId)} target="_blank" rel="noreferrer">点击下载</a>
+                {r.publishedFileId ? (
+                  <a href={fileSaveApi.genLocalGetFile(r.publishedFileId)} target="_blank" rel="noreferrer">下载正式 APK</a>
+                ) : (
+                  <span>暂无正式 APK</span>
+                )}
               </div>
             )}
           >
@@ -56,14 +60,26 @@ export default function ApkList() {
         )
       },
       BaseTableUtils.genSimpleSorterColumn('应用包名', 'applicationId', undefined, sorter),
-      BaseTableUtils.genSimpleSorterColumn('当前版本号', 'versionCode', 120, sorter),
-      BaseTableUtils.genSimpleSorterColumn('当前版本名称', 'versionName', 120, sorter),
       {
-        ...BaseTableUtils.genSimpleSorterColumn('文件大小', 'size', 120, sorter),
-        render: (val) => FaUtils.sizeToHuman(val),
+        ...BaseTableUtils.genSimpleSorterColumn('正式版本号', 'publishedVersionCode', 120, sorter),
+        sorter: false,
+        render: (value) => value ?? '暂无正式版本',
+      },
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('正式版本名称', 'publishedVersionName', 120, sorter),
+        sorter: false,
+        render: (value) => value ?? '-',
+      },
+      {
+        ...BaseTableUtils.genSimpleSorterColumn('正式包大小', 'publishedSize', 120, sorter),
+        sorter: false,
+        render: (value) => value == null ? '-' : FaUtils.sizeToHuman(value),
       },
       BaseTableUtils.genSimpleSorterColumn('下载次数', 'downloadNum', 100, sorter),
-      BaseTableUtils.genEllipsisSorterColumn('版本信息', 'remark', undefined, sorter),
+      {
+        ...BaseTableUtils.genEllipsisSorterColumn('版本信息', 'publishedRemark', undefined, sorter),
+        sorter: false,
+      },
       ...BaseTableUtils.genCtrColumns(sorter),
       ...BaseTableUtils.genUpdateColumns(sorter),
       {

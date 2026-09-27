@@ -115,6 +115,12 @@ namespace App {
     shortCode: string;
     /** 版本信息 */
     remark: string;
+    /** 最新已发布 APK 展示信息 */
+    publishedVersionCode?: number | null;
+    publishedVersionName?: string | null;
+    publishedFileId?: string | null;
+    publishedSize?: number | null;
+    publishedRemark?: string | null;
   }
 
   /** APP-APK版本表 */
@@ -139,6 +145,10 @@ namespace App {
     size: number;
     /** 下载次数 */
     downloadNum: number;
+    /** 发布状态 */
+    status: 'DRAFT' | 'PUBLISHED' | 'REVOKED';
+    /** 发布时间 */
+    publishTime: string | null;
     /** 强制更新 */
     forceUpdate: boolean;
     /** APK文件SHA-256摘要 */
