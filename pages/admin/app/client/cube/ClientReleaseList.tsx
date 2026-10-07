@@ -135,7 +135,7 @@ export default function ClientReleaseList({ clientId }: ClientReleaseListProps) 
       <Alert
         showIcon
         type={currentLoading ? 'info' : currentRelease ? 'success' : 'warning'}
-        message={
+        title={
           currentLoading
             ? '正在查询当前生效版本'
             : currentRelease

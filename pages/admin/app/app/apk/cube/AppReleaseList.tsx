@@ -151,7 +151,7 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
         type="info"
         showIcon
         style={{ margin: '0 8px 8px' }}
-        message="此处管理客户端更新发布；APK 安装包历史在“APK 安装包”中管理，WGT 目标资源版本由包内清单自动读取。"
+        title="此处管理客户端更新发布；APK 安装包历史在“APK 安装包”中管理，WGT 目标资源版本由包内清单自动读取。"
       />
       <BaseBizTable
         rowKey="id"

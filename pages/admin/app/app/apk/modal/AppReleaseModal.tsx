@@ -78,7 +78,7 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
           type="info"
           showIcon
           style={{ marginBottom: 16 }}
-          message="这里填写客户端更新的目标资源版本。通过 WGT 创建草稿时，版本名称和编码会从包内清单自动读取。"
+          title="这里填写客户端更新的目标资源版本。通过 WGT 创建草稿时，版本名称和编码会从包内清单自动读取。"
         />
         <Form form={form} onFinish={onFinish}>
           <Form.Item name="versionName" label="目标资源版本名称" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>

@@ -195,12 +195,12 @@ export default function WgtAutoMatchUploadModal({ fetchFinish }: WgtAutoMatchUpl
               <Button icon={<UploadOutlined />}>选择 .wgt 文件</Button>
             </UploadFileLocal>
           </Form.Item>
-          {matching && <Alert type="info" showIcon message="正在解析 WGT 并匹配 APK 应用及版本…" style={{ marginBottom: 16 }} />}
+          {matching && <Alert type="info" showIcon title="正在解析 WGT 并匹配 APK 应用及版本…" style={{ marginBottom: 16 }} />}
           {matchedApp && (
             <Alert
               type="success"
               showIcon
-              message={`已匹配应用：${matchedApp.appName}（${matchedApp.applicationId}）`}
+              title={`已匹配应用：${matchedApp.appName}（${matchedApp.applicationId}）`}
               description={`DCloud AppID：${matchedApp.dcloudAppId}；当前 APK：${matchedApp.currentApkVersionName || '未命名'}（版本号 ${matchedApp.currentApkVersionCode || '未知'}）；WGT 资源版本：${matchedApp.wgtVersionName}（${matchedApp.wgtVersionCode}）`}
               style={{ marginBottom: 16 }}
             />
