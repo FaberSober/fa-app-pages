@@ -82,7 +82,7 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
         />
         <Form form={form} onFinish={onFinish}>
           <Form.Item name="versionName" label="目标资源版本名称" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
-            <Input placeholder="例如 1.2.0" />
+            <Input placeholder="例如 1.2.0" disabled={!!record?.wgtMetadataJson} />
           </Form.Item>
           <Form.Item
             name="versionCode"
@@ -90,7 +90,7 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
             rules={[{ required: true }, { pattern: positiveInteger, message: '请输入正整数' }]}
             {...FaUtils.formItemFullLayout}
           >
-            <Input placeholder="按字符串输入，避免大整数精度损失" />
+            <Input placeholder="按字符串输入，避免大整数精度损失" disabled={!!record?.wgtMetadataJson} />
           </Form.Item>
           <Form.Item name="channel" label="发布渠道" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <Input placeholder="stable" />
@@ -108,7 +108,7 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
             {...FaUtils.formItemFullLayout}
             extra="留空表示不限制；低于此版本的客户端不会收到该 WGT。"
           >
-            <Input placeholder="可留空" />
+            <Input placeholder="可留空" disabled={!!record?.wgtMetadataJson} />
           </Form.Item>
           <Form.Item name="rolloutPercent" label="灰度比例（%）" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <InputNumber min={0} max={100} precision={0} style={{ width: '100%' }} />

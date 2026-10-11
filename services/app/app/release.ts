@@ -3,8 +3,7 @@ import { GATE_APP } from '@/configs';
 import type { App } from '@/types';
 
 class Api extends BaseApi<App.AppRelease, string> {
-  matchWgtAppByFileId = (request: App.AppReleaseAutoMatchRequest): Promise<Fa.Ret<App.AppReleaseAutoMatchPreview>> =>
-    this.post('matchWgtAppByFileId', request);
+  matchWgtAppByFileId = (request: App.AppReleaseAutoMatchRequest): Promise<Fa.Ret<App.AppReleaseAutoMatchPreview>> => this.post('matchWgtAppByFileId', request);
 
   createWgtDraftFromFile = (request: App.AppReleaseAutoMatchRequest): Promise<Fa.Ret<App.AppReleaseAutoMatchRet>> =>
     this.post('createWgtDraftFromFile', request, { timeout: -1 });
@@ -17,12 +16,31 @@ class Api extends BaseApi<App.AppRelease, string> {
     return this.postForm<App.AppReleaseAutoMatchRet>('createWgtDraftByWgt', formData, { timeout: -1 });
   };
 
-  createWgtDraft = (appId: number, minSupportedVersionCode: string | undefined, releaseNote: string, file: File): Promise<Fa.Ret<App.AppRelease>> => {
+  registerNativeBaseReport = (appId: number, file: File): Promise<Fa.Ret<{ nativeBaseReportFileId: string; apkVersionCode: string }>> => {
+    const data = new FormData();
+    data.append('appId', String(appId));
+    data.append('file', file);
+    return this.postForm('registerNativeBaseReport', data, { timeout: -1 });
+  };
+
+  createWgtDraft = (
+    appId: number,
+    minSupportedVersionCode: string | undefined,
+    releaseNote: string,
+    file: File,
+    vapor?: { nativeBaseReportFileId: string; buildReport: File },
+  ): Promise<Fa.Ret<App.AppRelease>> => {
     const formData = new FormData();
     formData.append('appId', String(appId));
     if (minSupportedVersionCode) formData.append('minSupportedVersionCode', minSupportedVersionCode);
     formData.append('releaseNote', releaseNote);
     formData.append('file', file);
+    if (vapor) {
+      formData.append('runtimeType', 'UNI_APP_X_VAPOR');
+      formData.append('platform', 'ANDROID');
+      formData.append('nativeBaseReportFileId', vapor.nativeBaseReportFileId);
+      formData.append('buildReport', vapor.buildReport);
+    }
     return this.postForm('createWgtDraft', formData, { timeout: -1 });
   };
 

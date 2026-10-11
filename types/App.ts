@@ -4,6 +4,10 @@ namespace App {
   export interface AppRelease extends Fa.BaseDelEntity {
     id: string;
     appId: number;
+    runtimeType: 'APP_PLUS' | 'UNI_APP_X_VAPOR';
+    platform: 'APP_PLUS' | 'ANDROID';
+    nativeBaseReportFileId: string | null;
+    wgtMetadataJson: string | null;
     versionName: string;
     versionCode: string;
     channel: string;
@@ -34,6 +38,8 @@ namespace App {
   }
 
   export interface AppReleaseAutoMatchPreview {
+    runtimeType: 'APP_PLUS' | 'UNI_APP_X_VAPOR';
+    platform: 'APP_PLUS' | 'ANDROID';
     appId: number;
     appName: string;
     applicationId: string;

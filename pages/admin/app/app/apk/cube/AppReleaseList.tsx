@@ -30,6 +30,8 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
               目标资源版本：{record.versionName}（{record.versionCode}）；渠道：{record.channel}；灰度比例：{record.rolloutPercent}%
             </p>
             <p>最低兼容 APK：{record.minSupportedVersionCode ? `≥ ${record.minSupportedVersionCode}` : '不限'}</p>
+            <p>运行时：{record.runtimeType}；平台：{record.platform}</p>
+            {record.nativeBaseReportFileId && <p>原生基座报告：{record.nativeBaseReportFileId}</p>}
             {packages.map((item) => (
               <p key={item.id}>
                 {item.packageType === 'WGT' ? 'WGT 热更新' : item.packageType}
@@ -82,6 +84,8 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
         render: (value: string | null) => (value ? `≥ ${value}` : '不限'),
       },
       BaseTableUtils.genSimpleSorterColumn('渠道', 'channel', 100, sorter),
+      BaseTableUtils.genSimpleSorterColumn('运行时', 'runtimeType', 160, sorter),
+      BaseTableUtils.genSimpleSorterColumn('平台', 'platform', 100, sorter),
       {
         ...BaseTableUtils.genSimpleSorterColumn('状态', 'status', 100, sorter),
         render: (value: App.AppRelease['status']) => (
