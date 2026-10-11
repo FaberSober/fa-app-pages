@@ -1,8 +1,8 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { type CommonModalProps, DragModal, FaHref, FaUtils, useApiLoading } from '@fa/ui';
-import { Alert, Button, Form, Input, InputNumber, Switch } from 'antd';
+import { Alert, Button, Form, Input, InputNumber, Select, Switch } from 'antd';
 import { useState } from 'react';
-import { appReleaseApi as api } from '@/services';
+import { appReleaseApi as api, apkVersionApi } from '@/services';
 import type { App } from '@/types';
 
 interface AppReleaseModalProps extends CommonModalProps<App.AppRelease> {
@@ -28,6 +28,7 @@ const positiveInteger = /^[1-9]\d*$/;
 export default function AppReleaseModal({ appId, title, record, fetchFinish, addBtn, editBtn }: AppReleaseModalProps) {
   const [form] = Form.useForm<ReleaseFormValues>();
   const [open, setOpen] = useState(false);
+  const [apkVersions, setApkVersions] = useState<App.ApkVersion[]>([]);
   const loading = useApiLoading([api.getUrl('save'), api.getUrl('update')]);
 
   function showModal() {
@@ -37,7 +38,7 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
       channel: record?.channel ?? 'stable',
       releaseNote: record?.releaseNote ?? '',
       forceUpdate: record?.forceUpdate ?? false,
-      minSupportedVersionCode: record?.minSupportedVersionCode ?? '',
+      minSupportedVersionCode: record?.minSupportedVersionCode ?? undefined,
       rolloutPercent: record?.rolloutPercent ?? 100,
       targetDeviceIds: record?.targetDeviceIds ?? '',
       autoRollback: record?.autoRollback ?? false,
@@ -45,6 +46,10 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
       rollbackWindowMinutes: record?.rollbackWindowMinutes ?? 15,
     });
     setOpen(true);
+    setApkVersions([]);
+    apkVersionApi.listByAppId({ appId }).then((res) => {
+      setApkVersions(res.data.filter((version) => version.status === 'PUBLISHED'));
+    });
   }
 
   function onFinish(values: ReleaseFormValues) {
@@ -106,9 +111,16 @@ export default function AppReleaseModal({ appId, title, record, fetchFinish, add
             label="最低兼容 APK"
             rules={[{ pattern: positiveInteger, message: '请输入正整数' }]}
             {...FaUtils.formItemFullLayout}
-            extra="留空表示不限制；低于此版本的客户端不会收到该 WGT。"
+            extra="留空表示不限制；低于此版本不会收到 WGT。有构建报告时，服务端自动关联所选 APK 已注册的基座报告。"
           >
-            <Input placeholder="可留空" disabled={!!record?.wgtMetadataJson} />
+            <Select
+              allowClear
+              placeholder="不限制"
+              options={apkVersions.map((version) => ({
+                value: String(version.versionCode),
+                label: `${version.versionName}（版本号 ${version.versionCode}）`,
+              }))}
+            />
           </Form.Item>
           <Form.Item name="rolloutPercent" label="灰度比例（%）" rules={[{ required: true }]} {...FaUtils.formItemFullLayout}>
             <InputNumber min={0} max={100} precision={0} style={{ width: '100%' }} />
