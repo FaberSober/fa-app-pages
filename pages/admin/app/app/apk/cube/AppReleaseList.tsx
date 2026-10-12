@@ -1,12 +1,12 @@
-import { CheckCircleOutlined, CloseCircleOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import { AuthDelBtn, BaseBizTable, BaseDrawer, BaseTableUtils, clearForm, type FaberTable, FaHref, FaUtils, useDelete, useTableQueryParams } from '@fa/ui';
-import { Alert, Button, Form, Input, Modal, Select, Space, Tag } from 'antd';
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { AuthDelBtn, BaseBizTable, BaseTableUtils, clearForm, type FaberTable, FaHref, FaUtils, fileSaveApi, useDelete, useTableQueryParams } from '@fa/ui';
+import { Alert, Button, Form, Input, Modal, Select, Space, Tag, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { appReleaseApi as api, appReleasePackageApi } from '@/services';
 import type { App } from '@/types';
 import AppReleaseModal from '../modal/AppReleaseModal';
 import WgtReleaseCreateModal from '../modal/WgtReleaseCreateModal';
-import AppReleasePackageList from './AppReleasePackageList';
+import WgtUploadModal from '../modal/WgtUploadModal';
 
 export default function AppReleaseList({ app }: { app: App.Apk }) {
   const [form] = Form.useForm();
@@ -14,10 +14,31 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
     useTableQueryParams<App.AppRelease>(api.page, { extraParams: { appId: app.id } }, '客户端更新发布');
   const [handleDelete] = useDelete<string>(api.remove, fetchPageList, 'APP 发布草稿');
   const [actionLoading, setActionLoading] = useState(false);
+  const [packagesByRelease, setPackagesByRelease] = useState<Record<string, App.AppReleasePackage[] | null>>({});
 
   useEffect(() => {
     setExtraParams({ appId: app.id });
   }, [app.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setPackagesByRelease({});
+    Promise.allSettled(list.map((release) => appReleasePackageApi.byRelease(release.id))).then((results) => {
+      if (cancelled) return;
+      const packages: Record<string, App.AppReleasePackage[] | null> = {};
+      results.forEach((result, index) => {
+        packages[list[index].id] = result.status === 'fulfilled' && result.value.code === 200 ? result.value.data : null;
+      });
+      setPackagesByRelease(packages);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [list]);
+
+  function getWgtPackage(record: App.AppRelease) {
+    return packagesByRelease[record.id]?.find((item) => item.packageType === 'WGT' && item.platform === record.platform);
+  }
 
   function handlePublish(record: App.AppRelease) {
     appReleasePackageApi.byRelease(record.id).then((res) => {
@@ -30,7 +51,9 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
               目标资源版本：{record.versionName}（{record.versionCode}）；渠道：{record.channel}；灰度比例：{record.rolloutPercent}%
             </p>
             <p>最低兼容 APK：{record.minSupportedVersionCode ? `≥ ${record.minSupportedVersionCode}` : '不限'}</p>
-            <p>运行时：{record.runtimeType}；平台：{record.platform}</p>
+            <p>
+              运行时：{record.runtimeType}；平台：{record.platform}
+            </p>
             {record.nativeBaseReportFileId && <p>原生基座报告：{record.nativeBaseReportFileId}</p>}
             {packages.map((item) => (
               <p key={item.id}>
@@ -87,6 +110,48 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
       BaseTableUtils.genSimpleSorterColumn('运行时', 'runtimeType', 160, sorter),
       BaseTableUtils.genSimpleSorterColumn('平台', 'platform', 100, sorter),
       {
+        title: 'WGT 文件',
+        dataIndex: 'wgtFile',
+        width: 130,
+        render: (_: unknown, record: App.AppRelease) => {
+          const file = getWgtPackage(record);
+          if (file) {
+            return (
+              <a href={fileSaveApi.genLocalGetFile(file.fileId)} target="_blank" rel="noreferrer">
+                下载 WGT
+              </a>
+            );
+          }
+          if (packagesByRelease[record.id] === undefined) return '加载中…';
+          if (packagesByRelease[record.id] === null) return <FaHref text="加载失败，重试" onClick={() => fetchPageList()} />;
+          return '未上传';
+        },
+      },
+      {
+        title: '文件大小',
+        dataIndex: 'wgtSize',
+        width: 110,
+        render: (_: unknown, record: App.AppRelease) => {
+          const file = getWgtPackage(record);
+          return file ? FaUtils.sizeToHuman(file.size) : '-';
+        },
+      },
+      {
+        title: 'SHA-256',
+        dataIndex: 'wgtSha256',
+        width: 210,
+        render: (_: unknown, record: App.AppRelease) => {
+          const sha256 = getWgtPackage(record)?.sha256;
+          return sha256 ? (
+            <Typography.Text title={sha256} copyable={{ text: sha256 }}>
+              {sha256.slice(0, 16)}…
+            </Typography.Text>
+          ) : (
+            '-'
+          );
+        },
+      },
+      {
         ...BaseTableUtils.genSimpleSorterColumn('状态', 'status', 100, sorter),
         render: (value: App.AppRelease['status']) => (
           <Tag color={value === 'PUBLISHED' ? 'green' : value === 'REVOKED' ? 'red' : 'default'}>
@@ -103,9 +168,7 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
         dataIndex: 'menu',
         render: (_: unknown, record: App.AppRelease) => (
           <Space>
-            <BaseDrawer title={`${record.versionName} 更新包`} triggerDom={<FaHref icon={<UnorderedListOutlined />} text="更新包" />} size={1100}>
-              <AppReleasePackageList release={record} />
-            </BaseDrawer>
+            {record.status === 'DRAFT' && packagesByRelease[record.id]?.length === 0 && <WgtUploadModal release={record} fetchFinish={fetchPageList} />}
             {record.status === 'DRAFT' && <AppReleaseModal editBtn title="编辑发布草稿" record={record} appId={app.id} fetchFinish={fetchPageList} />}
             {record.status === 'DRAFT' && <FaHref icon={<CheckCircleOutlined />} text="发布" disabled={actionLoading} onClick={() => handlePublish(record)} />}
             {record.status === 'PUBLISHED' && (
@@ -155,7 +218,7 @@ export default function AppReleaseList({ app }: { app: App.Apk }) {
         type="info"
         showIcon
         style={{ margin: '0 8px 8px' }}
-        title="此处管理客户端更新发布；APK 安装包历史在“APK 安装包”中管理，WGT 目标资源版本由包内清单自动读取。"
+        title="上传 WGT 后自动关联文件并读取资源版本，可在列表直接下载和查看摘要。APK 安装包历史在“APK 安装包”中管理。"
       />
       <BaseBizTable
         rowKey="id"
